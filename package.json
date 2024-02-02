@@ -1,5 +1,6 @@
 {
   "name": "staffnavigator",
+  "type": "module",
   "version": "1.0.0",
   "description": "An employee tracker",
   "main": "server.js",

@@ -1,25 +1,25 @@
-require('dotenv').config();
-const inquirer = require('inquirer');
-const mysql = require('mysql2');
-const consoleTable = require('console.table');
+import inquirer from 'inquirer';
+import mysql from 'mysql2';
+import 'console.table';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const connection = mysql.createConnection({
-    host: "process.env.DB_HOST",
-    port: "3306",
-    user: "process.env.DB_USER",
-    password: "process.env.DB_PASS",
-    database: "process.env.DB_DATABASE"
+const connection = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    port: 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
+    connectTimeout: 10000
 });
 
 connection.connect ((err) =>{
     if (err) throw err;
-    console.log(     StaffNavigator    );
-    console.log("Connected to the database!");
-
+    console.log("StaffNavigator Connected to the database!");
     start();
 })
 
-function start() {
+async function start() {
     inquirer.prompt([
         {
             type: 'list',
@@ -37,9 +37,9 @@ function start() {
             ]
         }
     ]).then(function(result) {
-        console.log("you entered: " + result.option);
+        console.log("you entered: " + result.Option);
 
-        switch (result.option) {
+        switch (result.Option) {
             case "View All Employees":
               viewallEmployees();
               break;
@@ -67,7 +67,7 @@ function start() {
     });
   }
 
-function viewallEmployees() {
+async function viewallEmployees() {
     let query = "SELECT * FROM employee";
     connection.query(query, function(err, res) {
         if (err) throw err;
@@ -76,13 +76,13 @@ function viewallEmployees() {
     });
 }
 
-function addEmployee() {
+async function addEmployee() {
     inquirer
       .prompt([
         {
             type: "input",
             message: "What is the first name of the employee?",
-            name: "eeFirstNßame"
+            name: "eeFirstName"
         },
         {
             type: "input",
@@ -103,7 +103,7 @@ function addEmployee() {
       .then(function(answer) {
 
       
-        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.eeFirstName, answer.eeLastName, answer.roleID, answer.managerID], function(err, res) {
+        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.eeFirstName, answer.eeLastName, answer.roleID, answer.managerID || null], function(err, res) {
           if (err) throw err;
           console.table(res);
           start();
@@ -111,7 +111,7 @@ function addEmployee() {
       });
 }
 
-function updateemployeeRole() {
+async function updateemployeeRole() {
     inquirer
       .prompt([
         {
@@ -139,7 +139,7 @@ function updateemployeeRole() {
       });
   }
 
-function viewallRoles() {
+async function viewallRoles() {
     
     let query = "Select * FROM role";
     connection.query(query, function (err, res) {
@@ -149,7 +149,7 @@ function viewallRoles() {
     });
 }
 
-function addRole() {
+async function addRole() {
     inquirer
       .prompt([
         {
@@ -178,7 +178,7 @@ function addRole() {
       });
 }
 
-function viewallDepartments() {
+async function viewallDepartments() {
     // select from the db
     let query = "SELECT * FROM department";
     connection.query(query, function(err, res) {
@@ -189,7 +189,7 @@ function viewallDepartments() {
     // show the result to the user (console.table)
   }
   
-  function addDepartment() {
+async function addDepartment() {
 
 
     inquirer.prompt({
@@ -210,7 +210,8 @@ function viewallDepartments() {
       });
 }
 
-function quit() {
-    connection.end();
+async function quit() {
+    await connection.end();
+    console.log('Disconnected from database.');
     process.exit();
 }
