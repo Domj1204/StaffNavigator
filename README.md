@@ -7,7 +7,7 @@ Screencast Overview
 For a video overview of this project, please watch our [Screencastify video](<chrome-extension://mmeijimgabbpbgpdklnllpncmdofkcpn/app.html#/files/dd8b51d7-4cca-4a85-yd33-557a19773b9c>)
 or copy and paste the link below:
 
-chrome-extension://mmeijimgabbpbgpdklnllpncmdofkcpn/app.html#/files/dd8b51d7-4cca-4a85-yd33-557a19773b9c
+[Walkthrough Video](https://drive.google.com/file/d/1GpuiFiyuV5Til8waJgqWOjosEuYAz_WC/view?pli=1)
 
 
 ## Table of Contents
